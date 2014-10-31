@@ -1,0 +1,36 @@
+Hello moodle user,
+
+In the instructions below, MOODLE_HOME is the path to where your Moodle is
+deployed in your server.
+
+To install this plugin:
+
+1- Upload/unpack everything under:
+MOODLE_HOME/auth/loginlogoutredir
+
+NOTE 1: You have to create the 'loginlogoutredir' folder.
+
+NOTE 2: if the package you got the files from put them within a folder of its own,
+remove the files from that folder. For example, there should *NOT* be a "moodle-auth_loginlogoutredir"
+folder under "MOODLE_HOME/auth/loginlogoutredir".
+
+2- Add two entries to your config.php:
+$CFG->loginredir = "{$CFG->wwwroot}/plus/some/different/path"
+$CFG->logoutredir = "Any URL you want"
+
+NOTE 1: Core Moodle will only accept to redirect if the URL begins with what's in $CFG->wwwroot.
+
+3- Login to Moodle with your admin account.
+
+4- Go to:
+Site Administration --> Plugins --> Authentication --> Manage Authentication
+
+5- Enable "Login/Logout user redirection".
+
+6- Save changes
+
+7- Try it out!
+
+Questions? Email felipe AT carassonet DOT org
+
+
