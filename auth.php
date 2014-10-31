@@ -14,7 +14,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 		global $CFG, $SESSION;
 		if ($CFG->loginredir) {
 			$urltogo = $CFG->loginredir;
-			if (!isset($SESSION->wantsurl)) {
+			if (true || !isset($SESSION->wantsurl)) {
 				$SESSION->wantsurl = $urltogo;
 			}
 			else {
