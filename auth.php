@@ -10,20 +10,24 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
         $this->config = get_config('auth/loginlogoutredir');
     }
 
-	function user_authenticated_hook($user, $username, $password) {
+    function user_authenticated_hook($user, $username, $password) {
 		global $CFG, $SESSION;
 		if ($CFG->loginredir) {
 			$urltogo = $CFG->loginredir;
-			$SESSION->wantsurl = $urltogo;
-			error_log("Redirecting to $urltogo");
+			if (!isset($SESSION->wantsurl)) {
+				$SESSION->wantsurl = $urltogo;
+			}
+			else {
+				error_log("Not redirecting to '$urltogo': came from other page '$SESSION->wantsurl'");
+			}
 		}
 		else {
 			error_log("'loginredir' not set in config.php. Not redirecting.");
 		}
 		return true;
-	}
+    }
 
-	function logoutpage_hook() {
+    function logoutpage_hook() {
 		global $CFG;
 		global $redirect;
 		if ($CFG->logoutredir) {
@@ -32,7 +36,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 		else {
 			error_log("'logoutredir' not set in config.php. Not redirecting.");
 		}
-	}
+    }
 }
 
 ?>
