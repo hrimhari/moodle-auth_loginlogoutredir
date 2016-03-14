@@ -10,9 +10,9 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
         $this->config = get_config('auth/loginlogoutredir');
     }
 
-    function user_authenticated_hook($user, $username, $password) {
+    function user_authenticated_hook(&$user, $username, $password) {
 		global $CFG, $SESSION;
-		if ($CFG->loginredir) {
+		if (isset($CFG->loginredir) && $CFG->loginredir) {
 			$urltogo = $CFG->loginredir;
 			if (true || !isset($SESSION->wantsurl)) {
 				$SESSION->wantsurl = $urltogo;
@@ -30,7 +30,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
     function logoutpage_hook() {
 		global $CFG;
 		global $redirect;
-		if ($CFG->logoutredir) {
+		if (isset($CFG->logoutredir) && $CFG->logoutredir) {
 			$redirect = $CFG->logoutredir;
 		}
 		else {
