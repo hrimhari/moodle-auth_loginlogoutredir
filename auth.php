@@ -9,6 +9,14 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
         $this->authtype = 'loginlogoutredir';
         $this->config = get_config('auth/loginlogoutredir');
     }
+    
+    /*
+     * Must override or an error is printed.
+     * @return boolean False means login was not a success.
+     */
+    function user_login($username, $password) {
+        false;
+    }
 
     function user_authenticated_hook(&$user, $username, $password) {
 		global $CFG, $SESSION;
