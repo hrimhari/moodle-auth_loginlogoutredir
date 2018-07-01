@@ -5,22 +5,19 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
     /**
      * Constructor.
      */
-    function auth_plugin_loginlogoutredir() {
+    function __construct() {
         $this->authtype = 'loginlogoutredir';
         $this->config = get_config('auth/loginlogoutredir');
-    }
-    
-    /*
-     * Must override or an error is printed.
-     * @return boolean False means login was not a success.
-     */
-    function user_login($username, $password) {
-        false;
     }
 
     function user_authenticated_hook(&$user, $username, $password) {
 		global $CFG, $SESSION;
-		if (isset($CFG->loginredir) && $CFG->loginredir) {
+
+		if(!isset($CFG->loginredir)) {
+			$CFG->loginredir = false;
+		}
+
+		if ($CFG->loginredir) {
 			$urltogo = $CFG->loginredir;
 			if (true || !isset($SESSION->wantsurl)) {
 				$SESSION->wantsurl = $urltogo;
@@ -30,7 +27,16 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 			}
 		}
 		else {
-			error_log("'loginredir' not set in config.php. Not redirecting.");
+			
+			if($_REQUEST["redirect_to_course"]) {
+				$courseid = clean_param($_REQUEST["redirect_to_course"], PARAM_RAW);
+				if (true || !isset($SESSION->wantsurl)) {
+					$SESSION->wantsurl = $CFG->wwwroot.'/'."course/view.php?id=$courseid";
+				}
+				else {
+					error_log("Not redirecting to course '$courseid': came from other page '$SESSION->wantsurl'");
+				}
+			} 
 		}
 		return true;
     }
@@ -38,11 +44,12 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
     function logoutpage_hook() {
 		global $CFG;
 		global $redirect;
-		if (isset($CFG->logoutredir) && $CFG->logoutredir) {
-			$redirect = $CFG->logoutredir;
-		}
-		else {
-			error_log("'logoutredir' not set in config.php. Not redirecting.");
+		if(isset($CFG->logoutredir)) {
+			if ($CFG->logoutredir) {
+				$redirect = $CFG->logoutredir;
+			} else {
+				error_log("'logoutredir' not set in config.php. Not redirecting.");
+			}
 		}
     }
 }
