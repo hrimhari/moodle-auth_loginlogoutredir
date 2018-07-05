@@ -7,11 +7,12 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
      */
     function __construct() {
         $this->authtype = 'loginlogoutredir';
-        $this->config = get_config('auth/loginlogoutredir');
-    }
+		$this->config = get_config('auth/loginlogoutredir');
+	}
 
     function user_authenticated_hook(&$user, $username, $password) {
 		global $CFG, $SESSION;
+
 
 		if(!isset($CFG->loginredir)) {
 			$CFG->loginredir = false;
@@ -27,16 +28,17 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 			}
 		}
 		else {
-			
-			if($_REQUEST["redirect_to_course"]) {
-				$courseid = clean_param($_REQUEST["redirect_to_course"], PARAM_RAW);
-				if (true || !isset($SESSION->wantsurl)) {
-					$SESSION->wantsurl = $CFG->wwwroot.'/'."course/view.php?id=$courseid";
+			if(array_key_exists("redirect_to_course",$_REQUEST)) {
+				if($_REQUEST["redirect_to_course"]) {
+					$courseid = clean_param($_REQUEST["redirect_to_course"], PARAM_RAW);
+					if (true || !isset($SESSION->wantsurl)) {
+						$SESSION->wantsurl = $CFG->wwwroot.'/'."course/view.php?id=$courseid";
+					}
+					else {
+						error_log("Not redirecting to course '$courseid': came from other page '$SESSION->wantsurl'");
+					}
 				}
-				else {
-					error_log("Not redirecting to course '$courseid': came from other page '$SESSION->wantsurl'");
-				}
-			} 
+			}
 		}
 		return true;
     }
