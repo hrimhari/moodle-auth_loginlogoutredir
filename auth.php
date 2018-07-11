@@ -10,6 +10,19 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 		$this->config = get_config('auth/loginlogoutredir');
 	}
 
+    /**
+     * Returns true if the username and password work and false if they are
+     * wrong or don't exist.
+     *
+     * @param string $username The username
+     * @param string $password The password
+     * @return bool Authentication success or failure.
+     */
+    function user_login ($username, $password) {
+        global $CFG, $DB;
+        return false;
+    }
+
     function user_authenticated_hook(&$user, $username, $password) {
 		global $CFG, $SESSION;
 
