@@ -5,7 +5,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
     /**
      * Constructor.
      */
-    function auth_plugin_loginlogoutredir() {
+    function __construct() {
         $this->authtype = 'loginlogoutredir';
         $this->config = get_config('auth/loginlogoutredir');
     }
