@@ -7,8 +7,8 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
      */
     function __construct() {
         $this->authtype = 'loginlogoutredir';
-		$this->config = get_config('auth/loginlogoutredir');
-	}
+        $this->config = get_config('auth/loginlogoutredir');
+    }
 
     /**
      * Returns true if the username and password work and false if they are
@@ -27,7 +27,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 		global $CFG, $SESSION;
 
 
-		if(!isset($CFG->loginredir)) {
+		if (!isset($CFG->loginredir)) {
 			$CFG->loginredir = false;
 		}
 
@@ -39,10 +39,9 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 			else {
 				error_log("Not redirecting to '$urltogo': came from other page '$SESSION->wantsurl'");
 			}
-		}
-		else {
-			if(array_key_exists("redirect_to_course",$_REQUEST)) {
-				if($_REQUEST["redirect_to_course"]) {
+		} else {
+			if (array_key_exists("redirect_to_course",$_REQUEST)) {
+				if ($_REQUEST["redirect_to_course"]) {
 					$courseid = clean_param($_REQUEST["redirect_to_course"], PARAM_RAW);
 					if (true || !isset($SESSION->wantsurl)) {
 						$SESSION->wantsurl = $CFG->wwwroot.'/'."course/view.php?id=$courseid";
@@ -51,21 +50,28 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 						error_log("Not redirecting to course '$courseid': came from other page '$SESSION->wantsurl'");
 					}
 				}
-			}
+			} else {                  
+                      $link = $CFG->landingpage_url . "/students/" . strval($user->id) . "/optin";
+                      $data = json_decode(file_get_contents($link), true);
+
+                      if ($data['id'] != '' && $data['terms'] != 1) {
+                        redirect($CFG->landingpage_url);
+                      }
+                  }
 		}
 		return true;
     }
 
     function logoutpage_hook() {
-		global $CFG;
-		global $redirect;
-		if(isset($CFG->logoutredir)) {
-			if ($CFG->logoutredir) {
-				$redirect = $CFG->logoutredir;
-			} else {
-				error_log("'logoutredir' not set in config.php. Not redirecting.");
-			}
-		}
+  		global $CFG;
+  		global $redirect;
+  		if (isset($CFG->logoutredir)) {
+  			if ($CFG->logoutredir) {
+  				$redirect = $CFG->logoutredir;
+  			} else {
+  				error_log("'logoutredir' not set in config.php. Not redirecting.");
+  			}
+  		}
     }
 }
 
