@@ -44,7 +44,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 				if ($_REQUEST["redirect_to_course"]) {
 					$courseid = clean_param($_REQUEST["redirect_to_course"], PARAM_RAW);
 					if (true || !isset($SESSION->wantsurl)) {
-						$SESSION->wantsurl = $CFG->wwwroot.'/'."course/view.php?id=$courseid";
+						$SESSION->wantsurl = $CFG->wwwroot . '/' . "course/view.php?id=$courseid";
 					}
 					else {
 						error_log("Not redirecting to course '$courseid': came from other page '$SESSION->wantsurl'");
@@ -55,7 +55,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
                       $data = json_decode(file_get_contents($link), true);
 
                       if ($data['id'] != '' && $data['terms'] != 1) {
-                        redirect($CFG->landingpage_url);
+                        redirect($CFG->landingpage_url . '?exec=login-e-editar');
                       }
                   }
 		}
