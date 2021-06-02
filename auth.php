@@ -50,13 +50,26 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
 						error_log("Not redirecting to course '$courseid': came from other page '$SESSION->wantsurl'");
 					}
 				}
-			} else {                  
-                      $link = $CFG->landingpage_url . "/students/" . strval($user->id) . "/optin";
-                      $data = json_decode(file_get_contents($link), true);
-
-                      if ($data['id'] != '' && $data['terms'] != 1) {
-                        redirect($CFG->landingpage_url . '?exec=login-e-editar');
+			} else {             
+                      if (!array_key_exists("lp", $_REQUEST)) {
+                          
+                          // encrypts the user moodle id to get terms acceptance from LP
+                          $uid = base64_encode(strval($user->id) . "hardfun");
+                          $link = $CFG->landingpage_url . "/students/" . $uid . "/optin";
+                          $data = json_decode(file_get_contents($link), true);
+                          
+                          // Redirects to LP if terms not accepted
+                          if ($data['id'] != '' && $data['terms'] != 1) {
+                            //redirect($CFG->landingpage_url . '?exec=login-e-termos');
+                            
+                            $crypt = $password . strval(rand(10, 99));
+                            $crypt = base64_encode($crypt);
+                            $crypt = 'zwpnb' . strrev($crypt) . 'ec';
+                            $crypt = base64_encode($crypt);
+                            redirect($CFG->landingpage_url . "/students/" . $uid . "/moodle_login?from_moodle=" . strrev($crypt));
+                          }
                       }
+
                   }
 		}
 		return true;
