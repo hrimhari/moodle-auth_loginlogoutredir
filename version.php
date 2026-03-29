@@ -18,16 +18,15 @@
  * Version details
  * NOTE: Based on "email" by Martin Dougiamas (http://dougiamas.com)
  *
- * @package    auth
- * @subpackage emailadmin
+ * @package    auth_loginlogoutredir
  * @copyright  2012 onwards Felipe Carasso (http://carassonet.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2024081700;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2018051700;        // Requires this Moodle version
+$plugin->version   = 2026032900;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2018051700;        // Requires this Moodle version (Moodle 3.5)
 $plugin->component = 'auth_loginlogoutredir';      // Full name of the plugin (used for diagnostics)
 $plugin->maturity  = MATURITY_RC;
-$plugin->release   = '1.0.2 (2024081700)';
+$plugin->release   = '1.0.3 (2026032900)';
