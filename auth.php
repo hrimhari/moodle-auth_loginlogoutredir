@@ -15,7 +15,7 @@ class auth_plugin_loginlogoutredir extends auth_plugin_base {
      * @return boolean False means login was not a success.
      */
     function user_login($username, $password) {
-        false;
+        return false;
     }
 
     function user_authenticated_hook(&$user, $username, $password) {
